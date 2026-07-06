@@ -780,10 +780,7 @@
     <h2>🛍️ Shop</h2>
     <p class="muted">Spend your bankroll on cosmetics and gameplay tweaks. Purely cosmetic stuff always counts toward your record. Anything that changes gameplay is clearly marked and won't count toward your Best Score or the Sharpest leaderboard — so bragging rights stay honest. Nothing in here adds extra time to the clock.</p>
     <!-- TEMP-AD-START (Adsterra — remove once AdSense is approved) -->
-    <div style="margin:10px 0;">
-      <script async="async" data-cfasync="false" src="https://pl30233742.effectivecpmnetwork.com/c21c33c788d6e748f636fcc897fee218/invoke.js"></script>
-      <div id="container-c21c33c788d6e748f636fcc897fee218"></div>
-    </div>
+    <div style="margin:10px 0;" id="nativeBannerSlot"></div>
     <!-- TEMP-AD-END -->
 
     <h3 style="margin-top:6px;">💰 Get More Cash</h3>
@@ -1870,6 +1867,29 @@ function showShop(){
   renderShop();
   renderAdWatchBanner();
   show('screen-shop');
+  loadNativeBannerAd();
+}
+// TEMP-AD (Adsterra — remove this whole function + its call above once AdSense
+// is approved): the native banner script is loaded fresh each time the Shop
+// screen opens, rather than sitting statically in the HTML — Adsterra's script
+// checks whether its container is actually visible on the page at the moment
+// it runs, and since this screen starts hidden, a static tag would fire before
+// the container ever became visible and silently render nothing (0 impressions,
+// which is exactly what was happening before this fix).
+let nativeBannerLoaded = false;
+function loadNativeBannerAd(){
+  if(nativeBannerLoaded) return;
+  nativeBannerLoaded = true;
+  const slot = document.getElementById('nativeBannerSlot');
+  if(!slot) return;
+  const container = document.createElement('div');
+  container.id = 'container-c21c33c788d6e748f636fcc897fee218';
+  slot.appendChild(container);
+  const script = document.createElement('script');
+  script.async = true;
+  script.setAttribute('data-cfasync', 'false');
+  script.src = 'https://pl30233742.effectivecpmnetwork.com/c21c33c788d6e748f636fcc897fee218/invoke.js';
+  slot.appendChild(script);
 }
 function renderShop(){
   const commonFlairs = FLAIR_DEFS.filter(f=>f.tier!=='legendary');
