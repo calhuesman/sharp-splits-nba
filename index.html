@@ -553,7 +553,7 @@
 <div class="wrap">
   <div class="brand">
     <h1>🏀 Sharp Splits</h1>
-    <div class="sub">2022-23 through 2025-26 Regular Seasons · Real stats via Fox Sports</div>
+    <div class="sub">2020-21 through 2025-26 Regular Seasons · Real stats via Fox Sports</div>
   </div>
 
   <div class="topbar" id="topbar" style="display:none;">
@@ -607,7 +607,7 @@
     <div class="stat-grid" id="homeStats"></div>
     <div id="achievementsProgress" style="margin-top:10px;"></div>
     <div class="rules-box">
-      <strong>How it works:</strong> Each round reveals a real NBA player from one of four real seasons (2022-23 through 2025-26) — you'll see which stat and season right before the reveal. Point guards get quizzed on PPG or APG, wings (SG/SF) on PPG, and bigs (PF/C) on PPG or RPG. Score = how far off you were. Lower total across 5 rounds is better. 253 real player-seasons in the pool so far, across four seasons: 2022-23, 2023-24, 2024-25, and 2025-26, no repeats until everyone's been used, 8 seconds per guess.
+      <strong>How it works:</strong> Each round reveals a real NBA player from one of six real seasons (2020-21 through 2025-26) — you'll see which stat and season right before the reveal. Point guards get quizzed on PPG or APG, wings (SG/SF) on PPG, and bigs (PF/C) on PPG or RPG. Score = how far off you were. Lower total across 5 rounds is better. 384 real player-seasons in the pool, across all six seasons: 2020-21 through 2025-26, no repeats until everyone's been used, 8 seconds per guess.
     </div>
     <button class="btn" onclick="goToBetting()">▶ Start a Game</button>
     <div class="btn-row">
@@ -747,11 +747,11 @@
 
     <h3 style="margin-top:6px;">💰 Get More Cash</h3>
     <div id="adWatchBannerShop" style="margin-bottom:8px;"></div>
-    <p class="muted" style="margin-top:0;">Real-money cash packs are coming once accounts are live — here's a preview:</p>
-    <div class="cash-pack-item"><div><div class="name">Starter Pack</div><div class="desc">$1.99 → 3,000 cash</div></div><span class="coming-soon-pill">Coming Soon</span></div>
-    <div class="cash-pack-item"><div><div class="name">Pro Pack</div><div class="desc">$4.99 → 9,500 cash</div></div><span class="coming-soon-pill">Coming Soon</span></div>
-    <div class="cash-pack-item"><div><div class="name">High Roller Pack <span class="muted">(great value)</span></div><div class="desc">$9.99 → 22,000 cash</div></div><span class="coming-soon-pill">Coming Soon</span></div>
-    <div class="cash-pack-item"><div><div class="name">Whale Pack <span class="muted">(best value)</span></div><div class="desc">$19.99 → 55,000 cash</div></div><span class="coming-soon-pill">Coming Soon</span></div>
+    <p class="muted" style="margin-top:0;">Real-money purchases — processed securely by Stripe, we never see or store your card details.</p>
+    <div class="cash-pack-item"><div><div class="name">Starter Pack</div><div class="desc">$1.99 → 4,000 cash</div></div><button class="shop-btn buy" onclick="buyCashPack('starter', this)">Buy</button></div>
+    <div class="cash-pack-item"><div><div class="name">Pro Pack</div><div class="desc">$4.99 → 13,000 cash</div></div><button class="shop-btn buy" onclick="buyCashPack('pro', this)">Buy</button></div>
+    <div class="cash-pack-item"><div><div class="name">High Roller Pack <span class="muted">(great value)</span></div><div class="desc">$9.99 → 30,000 cash</div></div><button class="shop-btn buy" onclick="buyCashPack('highroller', this)">Buy</button></div>
+    <div class="cash-pack-item"><div><div class="name">Whale Pack <span class="muted">(best value)</span></div><div class="desc">$19.99 → 75,000 cash</div></div><button class="shop-btn buy" onclick="buyCashPack('whale', this)">Buy</button></div>
 
     <div class="tier-label common">Common</div>
     <p class="muted" style="margin-top:0;">Cheap, useful, always available mid-round: <strong>Re-roll</strong> ($150, swap your current player) and <strong>Scout Report</strong> ($175, reveals games played + a rough yardage range). Both flag the game as boosted.</p>
@@ -794,6 +794,7 @@
       <button class="close-x" onclick="goHome()" aria-label="Close">✕</button>
     </div>
     <p class="muted">Pure bragging rights — same 5 players, whoever's total is lower wins. Doesn't touch your bankroll, achievements, or the main leaderboard.</p>
+    <div id="duelOverallRecord" style="margin-bottom:10px;"></div>
 
     <h3 style="margin-top:14px;">Play Anyone</h3>
     <div id="duelQueueBox"></div>
@@ -869,7 +870,7 @@
     <button class="btn ghost" onclick="goHome()">← Back to Home</button>
   </div>
 
-  <div class="hint">Stats sourced from Fox Sports — <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2022" target="_blank">2022-23</a>, <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2023" target="_blank">2023-24</a>, <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2024" target="_blank">2024-25</a>, and <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2025" target="_blank">2025-26</a> NBA regular seasons. This is a fun-money game; no real wagering occurs. Your name, bankroll, and best score are stored so the leaderboard can show them to other players.</div>
+  <div class="hint">Stats sourced from Fox Sports — <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2020" target="_blank">2020-21</a>, <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2021" target="_blank">2021-22</a>, <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2022" target="_blank">2022-23</a>, <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2023" target="_blank">2023-24</a>, <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2024" target="_blank">2024-25</a>, and <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2025" target="_blank">2025-26</a> NBA regular seasons. This is a fun-money game; no real wagering occurs. Your name, bankroll, and best score are stored so the leaderboard can show them to other players.</div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -901,7 +902,7 @@
       pricing tiers. Wiring this up needs a payment processor (Stripe/Apple/
       Google IAP) plus the backend from #1 so purchases attach to real
       accounts, not just a locally-typed name.
-   7) More seasons — 2022-23 through 2025-26 are in the pool now (253 player-seasons).
+   7) Full 6-season parity with the NFL version reached: 2020-21 through 2025-26 (384 player-seasons).
       2020-2024 and 2025-26 are the clear next step, same research process
       used for the NFL sister version's 6-year pool.
    8) Player photos/face icons — deliberately NOT implemented. Real players'
@@ -1190,7 +1191,148 @@ const PLAYERS = [
   {name:"Josh Giddey", team:"OKC", pos:"PG", year:2023, statType:"APG", value:6.2, games:76, note:"Thunder's point guard"},
   {name:"D'Angelo Russell", team:"LAL", pos:"PG", year:2023, statType:"APG", value:6.2, games:71, note:"Lakers' PG, mid-season trade from Minnesota"},
   {name:"Jamal Murray", team:"DEN", pos:"PG", year:2023, statType:"APG", value:6.2, games:65, note:"Nuggets' PG, NBA champion"},
-  {name:"De'Aaron Fox", team:"SAC", pos:"PG", year:2023, statType:"APG", value:6.1, games:73, note:"Kings' star PG"}
+  {name:"De'Aaron Fox", team:"SAC", pos:"PG", year:2023, statType:"APG", value:6.1, games:73, note:"Kings' star PG"},
+
+  // ===== 2021-22 NBA SEASON (source: Fox Sports 2021-22 regular season scoring/rebounding/assists top-25) =====
+  // year:2022 represents the "2021-22" season per seasonLabel().
+  {name:"Joel Embiid", team:"PHI", pos:"C", year:2022, statType:"PPG", value:30.6, games:68, note:"76ers' star center"},
+  {name:"Giannis Antetokounmpo", team:"MIL", pos:"PF", year:2022, statType:"PPG", value:29.9, games:67, note:"Bucks' star forward"},
+  {name:"Luka Doncic", team:"DAL", pos:"PG", year:2022, statType:"PPG", value:28.4, games:65, note:"Mavericks' star PG"},
+  {name:"Trae Young", team:"ATL", pos:"PG", year:2022, statType:"PPG", value:28.4, games:76, note:"Hawks' star PG"},
+  {name:"DeMar DeRozan", team:"CHI", pos:"SF", year:2022, statType:"PPG", value:27.9, games:76, note:"Bulls' veteran forward"},
+  {name:"Nikola Jokic", team:"DEN", pos:"C", year:2022, statType:"PPG", value:27.1, games:74, note:"Nuggets' star center, NBA MVP"},
+  {name:"Jayson Tatum", team:"BOS", pos:"SF", year:2022, statType:"PPG", value:26.9, games:76, note:"Celtics' star forward"},
+  {name:"Devin Booker", team:"PHX", pos:"SG", year:2022, statType:"PPG", value:26.8, games:68, note:"Suns' star guard"},
+  {name:"Donovan Mitchell", team:"UTA", pos:"SG", year:2022, statType:"PPG", value:25.9, games:67, note:"Jazz's star guard"},
+  {name:"Stephen Curry", team:"GSW", pos:"PG", year:2022, statType:"PPG", value:25.5, games:64, note:"Warriors' star PG, NBA champion"},
+  {name:"Karl-Anthony Towns", team:"MIN", pos:"C", year:2022, statType:"PPG", value:24.6, games:74, note:"Timberwolves' star center"},
+  {name:"Zach LaVine", team:"CHI", pos:"SG", year:2022, statType:"PPG", value:24.4, games:67, note:"Bulls' guard"},
+  {name:"Jaylen Brown", team:"BOS", pos:"SG", year:2022, statType:"PPG", value:23.6, games:66, note:"Celtics' star guard"},
+  {name:"De'Aaron Fox", team:"SAC", pos:"PG", year:2022, statType:"PPG", value:23.2, games:59, note:"Kings' star PG"},
+  {name:"Pascal Siakam", team:"TOR", pos:"PF", year:2022, statType:"PPG", value:22.8, games:68, note:"Raptors' forward"},
+  {name:"CJ McCollum", team:"NOP", pos:"SG", year:2022, statType:"PPG", value:22.1, games:62, note:"Pelicans' guard, mid-season trade from Portland"},
+  {name:"James Harden", team:"PHI", pos:"PG", year:2022, statType:"PPG", value:22.0, games:65, note:"76ers' PG, mid-season trade from Brooklyn"},
+  {name:"Darius Garland", team:"CLE", pos:"PG", year:2022, statType:"PPG", value:21.7, games:68, note:"Cavaliers' PG"},
+  {name:"Anthony Edwards", team:"MIN", pos:"SG", year:2022, statType:"PPG", value:21.3, games:72, note:"Timberwolves' guard"},
+  {name:"Dejounte Murray", team:"ATL", pos:"SG", year:2022, statType:"PPG", value:21.1, games:68, note:"Hawks' guard, before the 2022 trade from San Antonio"},
+  {name:"Tyler Herro", team:"MIA", pos:"SG", year:2022, statType:"PPG", value:20.7, games:66, note:"Heat's guard"},
+  {name:"Fred VanVleet", team:"TOR", pos:"PG", year:2022, statType:"PPG", value:20.3, games:65, note:"Raptors' PG"},
+  {name:"Miles Bridges", team:"CHA", pos:"PF", year:2022, statType:"PPG", value:20.2, games:80, note:"Hornets' forward"},
+  {name:"LaMelo Ball", team:"CHA", pos:"PG", year:2022, statType:"PPG", value:20.1, games:75, note:"Hornets' PG"},
+  {name:"Julius Randle", team:"NYK", pos:"PF", year:2022, statType:"PPG", value:20.1, games:72, note:"Knicks' forward"},
+
+  {name:"Rudy Gobert", team:"UTA", pos:"C", year:2022, statType:"RPG", value:14.7, games:66, note:"Jazz's defensive anchor"},
+  {name:"Nikola Jokic", team:"DEN", pos:"C", year:2022, statType:"RPG", value:13.8, games:74, note:"Nuggets' star center, NBA MVP"},
+  {name:"Domantas Sabonis", team:"SAC", pos:"C", year:2022, statType:"RPG", value:12.1, games:62, note:"Kings' center, mid-season trade from Indiana"},
+  {name:"Clint Capela", team:"ATL", pos:"C", year:2022, statType:"RPG", value:11.9, games:74, note:"Hawks' center"},
+  {name:"Joel Embiid", team:"PHI", pos:"C", year:2022, statType:"RPG", value:11.7, games:68, note:"76ers' star center"},
+  {name:"Giannis Antetokounmpo", team:"MIL", pos:"PF", year:2022, statType:"RPG", value:11.6, games:67, note:"Bucks' star forward"},
+  {name:"Jonas Valanciunas", team:"NOP", pos:"C", year:2022, statType:"RPG", value:11.4, games:74, note:"Pelicans' center"},
+  {name:"Nikola Vucevic", team:"CHI", pos:"C", year:2022, statType:"RPG", value:11.0, games:73, note:"Bulls' center"},
+  {name:"Wendell Carter Jr.", team:"ORL", pos:"C", year:2022, statType:"RPG", value:10.5, games:62, note:"Magic's center"},
+  {name:"Deandre Ayton", team:"PHX", pos:"C", year:2022, statType:"RPG", value:10.2, games:58, note:"Suns' center"},
+  {name:"Christian Wood", team:"DAL", pos:"C", year:2022, statType:"RPG", value:10.1, games:68, note:"Mavericks' center that season"},
+  {name:"Steven Adams", team:"MEM", pos:"C", year:2022, statType:"RPG", value:10.0, games:76, note:"Grizzlies' center"},
+  {name:"Julius Randle", team:"NYK", pos:"PF", year:2022, statType:"RPG", value:9.9, games:72, note:"Knicks' forward"},
+  {name:"Karl-Anthony Towns", team:"MIN", pos:"C", year:2022, statType:"RPG", value:9.8, games:74, note:"Timberwolves' star center"},
+  {name:"Robert Williams III", team:"BOS", pos:"C", year:2022, statType:"RPG", value:9.6, games:61, note:"Celtics' center"},
+  {name:"Jakob Poeltl", team:"SAS", pos:"C", year:2022, statType:"RPG", value:9.3, games:68, note:"Spurs' center"},
+  {name:"Andre Drummond", team:"CHI", pos:"C", year:2022, statType:"RPG", value:9.3, games:73, note:"Bulls' backup center"},
+  {name:"Bobby Portis", team:"MIL", pos:"PF", year:2022, statType:"RPG", value:9.1, games:72, note:"Bucks' forward"},
+  {name:"Isaiah Stewart", team:"DET", pos:"C", year:2022, statType:"RPG", value:8.7, games:71, note:"Pistons' center"},
+  {name:"Mitchell Robinson", team:"NYK", pos:"C", year:2022, statType:"RPG", value:8.6, games:72, note:"Knicks' center"},
+  {name:"Kyle Kuzma", team:"WAS", pos:"PF", year:2022, statType:"RPG", value:8.5, games:66, note:"Wizards' forward"},
+  {name:"Ivica Zubac", team:"LAC", pos:"C", year:2022, statType:"RPG", value:8.5, games:76, note:"Clippers' center"},
+  {name:"Jarred Vanderbilt", team:"MIN", pos:"PF", year:2022, statType:"RPG", value:8.4, games:74, note:"Timberwolves' forward that season"},
+
+  {name:"Chris Paul", team:"PHX", pos:"PG", year:2022, statType:"APG", value:10.8, games:65, note:"Suns' veteran PG"},
+  {name:"James Harden", team:"PHI", pos:"PG", year:2022, statType:"APG", value:10.3, games:65, note:"76ers' PG, mid-season trade from Brooklyn"},
+  {name:"Trae Young", team:"ATL", pos:"PG", year:2022, statType:"APG", value:9.7, games:76, note:"Hawks' star PG"},
+  {name:"Dejounte Murray", team:"ATL", pos:"PG", year:2022, statType:"APG", value:9.2, games:68, note:"Hawks' guard, before the 2022 trade from San Antonio"},
+  {name:"Luka Doncic", team:"DAL", pos:"PG", year:2022, statType:"APG", value:8.7, games:65, note:"Mavericks' star PG"},
+  {name:"Darius Garland", team:"CLE", pos:"PG", year:2022, statType:"APG", value:8.6, games:68, note:"Cavaliers' PG"},
+  {name:"Tyrese Haliburton", team:"IND", pos:"PG", year:2022, statType:"APG", value:8.2, games:77, note:"Pacers' PG"},
+  {name:"LaMelo Ball", team:"CHA", pos:"PG", year:2022, statType:"APG", value:7.6, games:75, note:"Hornets' PG"},
+  {name:"Kyle Lowry", team:"MIA", pos:"PG", year:2022, statType:"APG", value:7.5, games:63, note:"Heat's veteran PG"},
+  {name:"D'Angelo Russell", team:"MIN", pos:"PG", year:2022, statType:"APG", value:7.1, games:65, note:"Timberwolves' PG"},
+  {name:"Russell Westbrook", team:"LAL", pos:"PG", year:2022, statType:"APG", value:7.1, games:78, note:"Lakers' veteran PG"},
+  {name:"Fred VanVleet", team:"TOR", pos:"PG", year:2022, statType:"APG", value:6.7, games:65, note:"Raptors' PG"},
+  {name:"Stephen Curry", team:"GSW", pos:"PG", year:2022, statType:"APG", value:6.3, games:64, note:"Warriors' star PG, NBA champion"},
+  {name:"Marcus Smart", team:"BOS", pos:"PG", year:2022, statType:"APG", value:5.9, games:71, note:"Celtics' PG"},
+  {name:"De'Aaron Fox", team:"SAC", pos:"PG", year:2022, statType:"APG", value:5.6, games:59, note:"Kings' star PG"},
+  {name:"Cade Cunningham", team:"DET", pos:"PG", year:2022, statType:"APG", value:5.6, games:64, note:"Pistons' rookie PG"},
+  {name:"Mike Conley", team:"UTA", pos:"PG", year:2022, statType:"APG", value:5.3, games:72, note:"Jazz's veteran PG"},
+
+  // ===== 2020-21 NBA SEASON (source: Fox Sports 2020-21 regular season scoring/rebounding/assists top-25) =====
+  // year:2021 represents the "2020-21" season per seasonLabel().
+  {name:"Stephen Curry", team:"GSW", pos:"PG", year:2021, statType:"PPG", value:32.0, games:63, note:"Warriors' star PG, PPG league leader"},
+  {name:"Bradley Beal", team:"WAS", pos:"SG", year:2021, statType:"PPG", value:31.3, games:60, note:"Wizards' star guard"},
+  {name:"Damian Lillard", team:"POR", pos:"PG", year:2021, statType:"PPG", value:28.8, games:67, note:"Trail Blazers' star PG"},
+  {name:"Joel Embiid", team:"PHI", pos:"C", year:2021, statType:"PPG", value:28.5, games:51, note:"76ers' star center"},
+  {name:"Giannis Antetokounmpo", team:"MIL", pos:"PF", year:2021, statType:"PPG", value:28.1, games:61, note:"Bucks' star forward, NBA champion, Finals MVP"},
+  {name:"Luka Doncic", team:"DAL", pos:"PG", year:2021, statType:"PPG", value:27.7, games:66, note:"Mavericks' star PG"},
+  {name:"Zach LaVine", team:"CHI", pos:"SG", year:2021, statType:"PPG", value:27.4, games:58, note:"Bulls' guard"},
+  {name:"Zion Williamson", team:"NOP", pos:"PF", year:2021, statType:"PPG", value:27.0, games:61, note:"Pelicans' forward"},
+  {name:"Kyrie Irving", team:"BKN", pos:"PG", year:2021, statType:"PPG", value:26.9, games:54, note:"Nets' PG"},
+  {name:"Jayson Tatum", team:"BOS", pos:"SF", year:2021, statType:"PPG", value:26.4, games:64, note:"Celtics' star forward"},
+  {name:"Donovan Mitchell", team:"UTA", pos:"SG", year:2021, statType:"PPG", value:26.4, games:53, note:"Jazz's star guard"},
+  {name:"Nikola Jokic", team:"DEN", pos:"C", year:2021, statType:"PPG", value:26.4, games:72, note:"Nuggets' star center, NBA MVP"},
+  {name:"Devin Booker", team:"PHX", pos:"SG", year:2021, statType:"PPG", value:25.6, games:67, note:"Suns' star guard"},
+  {name:"Trae Young", team:"ATL", pos:"PG", year:2021, statType:"PPG", value:25.3, games:63, note:"Hawks' star PG"},
+  {name:"De'Aaron Fox", team:"SAC", pos:"PG", year:2021, statType:"PPG", value:25.2, games:58, note:"Kings' star PG"},
+  {name:"Kawhi Leonard", team:"LAC", pos:"SF", year:2021, statType:"PPG", value:24.8, games:52, note:"Clippers' star forward"},
+  {name:"Jaylen Brown", team:"BOS", pos:"SG", year:2021, statType:"PPG", value:24.7, games:58, note:"Celtics' star guard"},
+  {name:"Collin Sexton", team:"CLE", pos:"PG", year:2021, statType:"PPG", value:24.3, games:60, note:"Cavaliers' guard"},
+  {name:"Julius Randle", team:"NYK", pos:"PF", year:2021, statType:"PPG", value:24.1, games:71, note:"Knicks' forward"},
+  {name:"Brandon Ingram", team:"NOP", pos:"SF", year:2021, statType:"PPG", value:23.8, games:61, note:"Pelicans' forward"},
+  {name:"Nikola Vucevic", team:"CHI", pos:"C", year:2021, statType:"PPG", value:23.4, games:70, note:"Bulls' center, mid-season trade from Orlando"},
+  {name:"Paul George", team:"LAC", pos:"SF", year:2021, statType:"PPG", value:23.3, games:54, note:"Clippers' star forward"},
+  {name:"Jerami Grant", team:"DET", pos:"PF", year:2021, statType:"PPG", value:22.3, games:54, note:"Pistons' forward"},
+  {name:"Russell Westbrook", team:"WAS", pos:"PG", year:2021, statType:"PPG", value:22.2, games:65, note:"Wizards' PG that season"},
+  {name:"DeMar DeRozan", team:"SAS", pos:"SF", year:2021, statType:"PPG", value:21.6, games:61, note:"Spurs' veteran forward that season"},
+
+  {name:"Clint Capela", team:"ATL", pos:"C", year:2021, statType:"RPG", value:14.3, games:63, note:"Hawks' center, RPG league leader"},
+  {name:"Rudy Gobert", team:"UTA", pos:"C", year:2021, statType:"RPG", value:13.5, games:71, note:"Jazz's defensive anchor"},
+  {name:"Jonas Valanciunas", team:"MEM", pos:"C", year:2021, statType:"RPG", value:12.5, games:62, note:"Grizzlies' center that season"},
+  {name:"Domantas Sabonis", team:"IND", pos:"C", year:2021, statType:"RPG", value:12.0, games:62, note:"Pacers' center that season"},
+  {name:"Nikola Vucevic", team:"CHI", pos:"C", year:2021, statType:"RPG", value:11.7, games:70, note:"Bulls' center, mid-season trade from Orlando"},
+  {name:"Russell Westbrook", team:"WAS", pos:"PG", year:2021, statType:"RPG", value:11.5, games:65, note:"Wizards' PG that season"},
+  {name:"Enes Kanter", team:"BOS", pos:"C", year:2021, statType:"RPG", value:11.0, games:72, note:"Celtics' center, mid-season trade from Portland"},
+  {name:"Giannis Antetokounmpo", team:"MIL", pos:"PF", year:2021, statType:"RPG", value:11.0, games:61, note:"Bucks' star forward, NBA champion, Finals MVP"},
+  {name:"Nikola Jokic", team:"DEN", pos:"C", year:2021, statType:"RPG", value:10.8, games:72, note:"Nuggets' star center, NBA MVP"},
+  {name:"Joel Embiid", team:"PHI", pos:"C", year:2021, statType:"RPG", value:10.6, games:51, note:"76ers' star center"},
+  {name:"Deandre Ayton", team:"PHX", pos:"C", year:2021, statType:"RPG", value:10.5, games:69, note:"Suns' center"},
+  {name:"Julius Randle", team:"NYK", pos:"PF", year:2021, statType:"RPG", value:10.2, games:71, note:"Knicks' forward"},
+  {name:"Jarrett Allen", team:"CLE", pos:"C", year:2021, statType:"RPG", value:10.0, games:63, note:"Cavaliers' center"},
+  {name:"Mason Plumlee", team:"CHA", pos:"C", year:2021, statType:"RPG", value:9.3, games:56, note:"Hornets' center"},
+  {name:"Bam Adebayo", team:"MIA", pos:"C", year:2021, statType:"RPG", value:9.0, games:64, note:"Heat's star center"},
+  {name:"Steven Adams", team:"MEM", pos:"C", year:2021, statType:"RPG", value:8.9, games:58, note:"Grizzlies' center"},
+  {name:"Dwight Howard", team:"LAL", pos:"C", year:2021, statType:"RPG", value:8.4, games:69, note:"Lakers' veteran center"},
+  {name:"Richaun Holmes", team:"SAC", pos:"C", year:2021, statType:"RPG", value:8.3, games:61, note:"Kings' center"},
+  {name:"Wendell Carter Jr.", team:"ORL", pos:"C", year:2021, statType:"RPG", value:8.2, games:54, note:"Magic's center that season"},
+  {name:"Tristan Thompson", team:"BOS", pos:"C", year:2021, statType:"RPG", value:8.1, games:54, note:"Celtics' center that season"},
+  {name:"Luka Doncic", team:"DAL", pos:"PG", year:2021, statType:"RPG", value:8.0, games:66, note:"Mavericks' star PG"},
+  {name:"Jakob Poeltl", team:"SAS", pos:"C", year:2021, statType:"RPG", value:7.9, games:69, note:"Spurs' center"},
+  {name:"John Collins", team:"ATL", pos:"PF", year:2021, statType:"RPG", value:7.4, games:63, note:"Hawks' forward"},
+  {name:"Jayson Tatum", team:"BOS", pos:"SF", year:2021, statType:"RPG", value:7.4, games:64, note:"Celtics' star forward"},
+
+  {name:"Russell Westbrook", team:"WAS", pos:"PG", year:2021, statType:"APG", value:11.7, games:65, note:"Wizards' PG that season, APG league leader"},
+  {name:"Trae Young", team:"ATL", pos:"PG", year:2021, statType:"APG", value:9.4, games:63, note:"Hawks' star PG"},
+  {name:"Chris Paul", team:"PHX", pos:"PG", year:2021, statType:"APG", value:8.9, games:70, note:"Suns' veteran PG"},
+  {name:"Luka Doncic", team:"DAL", pos:"PG", year:2021, statType:"APG", value:8.6, games:66, note:"Mavericks' star PG"},
+  {name:"Nikola Jokic", team:"DEN", pos:"C", year:2021, statType:"APG", value:8.3, games:72, note:"Nuggets' star center, NBA MVP"},
+  {name:"Damian Lillard", team:"POR", pos:"PG", year:2021, statType:"APG", value:7.5, games:67, note:"Trail Blazers' star PG"},
+  {name:"Ja Morant", team:"MEM", pos:"PG", year:2021, statType:"APG", value:7.4, games:63, note:"Grizzlies' star PG"},
+  {name:"De'Aaron Fox", team:"SAC", pos:"PG", year:2021, statType:"APG", value:7.2, games:58, note:"Kings' star PG"},
+  {name:"Fred VanVleet", team:"TOR", pos:"PG", year:2021, statType:"APG", value:6.3, games:52, note:"Raptors' PG"},
+  {name:"Mike Conley", team:"UTA", pos:"PG", year:2021, statType:"APG", value:6.0, games:51, note:"Jazz's veteran PG"},
+  {name:"Kyrie Irving", team:"BKN", pos:"PG", year:2021, statType:"APG", value:6.0, games:54, note:"Nets' PG"},
+  {name:"Darius Garland", team:"CLE", pos:"PG", year:2021, statType:"APG", value:6.1, games:54, note:"Cavaliers' PG"},
+  {name:"Jrue Holiday", team:"MIL", pos:"PG", year:2021, statType:"APG", value:6.1, games:59, note:"Bucks' PG, NBA champion"},
+  {name:"Ricky Rubio", team:"MIN", pos:"PG", year:2021, statType:"APG", value:6.4, games:68, note:"Timberwolves' PG that season"},
+  {name:"LaMelo Ball", team:"CHA", pos:"PG", year:2021, statType:"APG", value:6.1, games:51, note:"Hornets' rookie PG"},
+  {name:"Malcolm Brogdon", team:"IND", pos:"PG", year:2021, statType:"APG", value:5.9, games:56, note:"Pacers' PG"},
+  {name:"Giannis Antetokounmpo", team:"MIL", pos:"PF", year:2021, statType:"APG", value:5.9, games:61, note:"Bucks' star forward, NBA champion, Finals MVP"}
 ];
 
 const STAT_LABELS = {PPG:"Points Per Game", RPG:"Rebounds Per Game", APG:"Assists Per Game"};
@@ -1201,7 +1343,7 @@ function playerKey(p){ return `${p.name}|${p.year}|${p.statType}`; }
 // it), so a fully uniform random draw would make it dominate nearly a third of every
 // game. This gives it a modest edge over the others without letting it crowd them out —
 // weights are draw probability, NOT how many players of each year exist in the pool.
-const YEAR_DRAW_WEIGHTS = {2023:22, 2024:24, 2025:26, 2026:28}; // 2026 = 2025-26, the newest season, gets a modest edge
+const YEAR_DRAW_WEIGHTS = {2021:16, 2022:16, 2023:16, 2024:16, 2025:16, 2026:20}; // 2026 = 2025-26, the newest season, gets a modest edge (same pattern as the NFL version's 6-year weighting)
 function pickWeightedYear(years){
   const weights = years.map(y=>YEAR_DRAW_WEIGHTS[y] || 10);
   const total = weights.reduce((a,b)=>a+b,0);
@@ -2088,7 +2230,7 @@ async function editDisplayName(){
 const TUTORIAL_SLIDES = [
   {
     title: "👋 Welcome to Sharp Splits",
-    body: "Each round shows a real NBA player from one of four real seasons (2022-23 through 2025-26). Your job: guess their season stat average — points for everyone, assists for point guards, rebounds for forwards/centers. Closer guesses score better."
+    body: "Each round shows a real NBA player from one of six real seasons (2020-21 through 2025-26). Your job: guess their season stat average — points for everyone, assists for point guards, rebounds for forwards/centers. Closer guesses score better."
   },
   {
     title: "🏀 Know your stat",
@@ -2480,7 +2622,7 @@ const oddsMap = {
   perfect: {yes:1500},
   hothand: {yes:150},
   starpower: {yes:-150, no:220},
-  yearmix: {yes:250, no:-350} // recalibrated for 4 seasons: "all 4 seasons in your 5" (~24%) vs "not all 4" (~76%)
+  yearmix: {yes:-400, no:280} // now 6 seasons, same design and odds as the NFL version (2+ different seasons vs all one season)
 };
 
 let currentTotalLines = null;
@@ -2635,7 +2777,7 @@ function renderBettingScreen(){
     </div>
 
     <h3>Star Power <span class="muted" style="font-weight:400;">(pure luck of the draw)</span> <button type="button" class="info-icon-btn" onclick="showStarList()" aria-label="Which players count as stars">ⓘ</button></h3>
-    <p class="muted" style="margin-top:-6px;">78 of the 253 player-seasons belong to a league star (tap the ⓘ to see who). This is about who you're dealt, not how well you guess.</p>
+    <p class="muted" style="margin-top:-6px;">115 of the 384 player-seasons belong to a league star (tap the ⓘ to see who). This is about who you're dealt, not how well you guess.</p>
     <div class="bet-row">
       <label class="bet-option"><span><input type="radio" name="bet-starpower" value="yes"> At least 1 star gets drawn</span><span class="odds">${oddsText(oddsMap.starpower.yes)}</span></label>
       <label class="bet-option"><span><input type="radio" name="bet-starpower" value="no"> No stars get drawn</span><span class="odds">${oddsText(oddsMap.starpower.no)}</span></label>
@@ -2643,11 +2785,11 @@ function renderBettingScreen(){
       ${stakeInputBlock('starpower')}
     </div>
 
-    <h3>Season Sweep <span class="muted" style="font-weight:400;">(pure luck of the draw)</span></h3>
-    <p class="muted" style="margin-top:-6px;">253 player-seasons span four seasons — 2022-23 through 2025-26. Will your hand of 5 touch all four, or miss at least one?</p>
+    <h3>Multi-Year Mix <span class="muted" style="font-weight:400;">(pure luck of the draw)</span></h3>
+    <p class="muted" style="margin-top:-6px;">384 player-seasons span six seasons — 2020-21 through 2025-26. Will your hand of 5 cross multiple seasons, or land all in one?</p>
     <div class="bet-row">
-      <label class="bet-option"><span><input type="radio" name="bet-yearmix" value="yes"> All 4 seasons show up in your 5</span><span class="odds">${oddsText(oddsMap.yearmix.yes)}</span></label>
-      <label class="bet-option"><span><input type="radio" name="bet-yearmix" value="no"> At least one season is missing</span><span class="odds">${oddsText(oddsMap.yearmix.no)}</span></label>
+      <label class="bet-option"><span><input type="radio" name="bet-yearmix" value="yes"> 2+ different seasons get drawn</span><span class="odds">${oddsText(oddsMap.yearmix.yes)}</span></label>
+      <label class="bet-option"><span><input type="radio" name="bet-yearmix" value="no"> All 5 land in the same season</span><span class="odds">${oddsText(oddsMap.yearmix.no)}</span></label>
       <label class="bet-option"><span><input type="radio" name="bet-yearmix" value="none" checked> No bet</span><span class="odds">—</span></label>
       ${stakeInputBlock('yearmix')}
     </div>
@@ -2937,7 +3079,7 @@ function loadRound(){
   renderProgressDots('progressDotsYear');
   document.getElementById('yearRevealRoundNum').textContent = currentRound+1;
   document.getElementById('yearRevealBadge').textContent = seasonLabel(p.year);
-  document.getElementById('yearRevealLabel').textContent = `${p.year} season`;
+  document.getElementById('yearRevealLabel').textContent = `${seasonLabel(p.year)} ${p.statType}`;
   show('screen-year-reveal');
 }
 
@@ -3344,9 +3486,9 @@ async function finishGame(){
   }
   if(bets.yearmix){
     const yearsSeen = new Set(roundPlayers.map(p=>p.year));
-    const allFour = yearsSeen.size >= 4;
-    const won = bets.yearmix.choice === "yes" ? allFour : !allFour;
-    resolve("yearmix", bets.yearmix.choice === "yes" ? "Season Sweep: all 4 seasons drawn" : "Season Sweep: at least one missing", won);
+    const isMixed = yearsSeen.size > 1;
+    const won = bets.yearmix.choice === "yes" ? isMixed : !isMixed;
+    resolve("yearmix", bets.yearmix.choice === "yes" ? "Multi-Year Mix: 2+ years drawn" : "Multi-Year Mix: all one year", won);
   }
   if(bets.perfect){
     resolve("perfect", "Perfect Guess (any round)", hasPerfect);
@@ -3817,6 +3959,26 @@ async function showDuelHub(){
 
   const duels = await fetchMyDuels();
 
+  const totalW = profile.duelWins || 0;
+  const totalL = profile.duelLosses || 0;
+  document.getElementById('duelOverallRecord').innerHTML = (totalW + totalL) > 0
+    ? `<div class="stat-box" style="display:inline-block; padding:10px 18px;"><div class="num">${totalW}-${totalL}</div><div class="lbl">Your Overall Duel Record</div></div>`
+    : '';
+
+  function recordVs(opponentName){
+    let w = 0, l = 0, t = 0;
+    duels.filter(d => d.status === 'complete').forEach(d => {
+      const otherName = d.challenger === profile.username ? d.opponent : d.challenger;
+      if(otherName !== opponentName) return;
+      const myScore = d.challenger === profile.username ? d.challenger_score : d.opponent_score;
+      const theirScore = d.challenger === profile.username ? d.opponent_score : d.challenger_score;
+      if(myScore === theirScore) t++;
+      else if(myScore < theirScore) w++;
+      else l++;
+    });
+    return { w, l, t };
+  }
+
   const incoming = duels.filter(d => d.status === 'pending' && d.opponent === profile.username);
   document.getElementById('duelIncoming').innerHTML = incoming.length === 0 ? '' : `
     <h3>Incoming Challenges</h3>
@@ -3857,7 +4019,8 @@ async function showDuelHub(){
       const otherName = iAmChallenger ? d.opponent : d.challenger;
       const outcome = myScore === otherScore ? 'push' : (myScore < otherScore ? 'win' : 'lose');
       const label = outcome === 'push' ? 'TIE' : outcome === 'win' ? 'WON' : 'LOST';
-      return `<div class="shop-item"><div class="info"><span class="emoji">${outcome==='win'?'🏆':outcome==='lose'?'💀':'🤝'}</span><div><div class="name">vs ${escapeHtml(otherName)}</div><div class="desc">You: ${myScore.toFixed ? myScore.toFixed(1) : myScore} off · Them: ${otherScore.toFixed ? otherScore.toFixed(1) : otherScore} off</div></div></div><span class="badge-pill ${outcome==='win'?'win':outcome==='lose'?'lose':'push'}">${label}</span></div>`;
+      const rec = recordVs(otherName);
+      return `<div class="shop-item"><div class="info"><span class="emoji">${outcome==='win'?'🏆':outcome==='lose'?'💀':'🤝'}</span><div><div class="name">vs ${escapeHtml(otherName)} <span class="muted" style="font-weight:400;">(${rec.w}-${rec.l}${rec.t?`-${rec.t}`:''} all-time)</span></div><div class="desc">You: ${myScore.toFixed ? myScore.toFixed(1) : myScore} off · Them: ${otherScore.toFixed ? otherScore.toFixed(1) : otherScore} off</div></div></div><span class="badge-pill ${outcome==='win'?'win':outcome==='lose'?'lose':'push'}">${label}</span></div>`;
     }).join('')}
   `;
 }
@@ -4174,6 +4337,51 @@ function renderDailyBonusBanner(){
 // Flip this to true once real ads are actually running on the site — until then the
 // button just stays hidden everywhere instead of offering a reward with no ad behind it.
 const ADS_ENABLED = false;
+
+// ---------- STRIPE CASH PACKS ----------
+// The Edge Function does the actual charge server-side; this just redirects
+// the browser to Stripe's hosted Checkout page and comes back afterward.
+async function buyCashPack(packId, btn){
+  if(btn) { btn.disabled = true; btn.textContent = 'Please wait…'; }
+  try{
+    const { data: { session } } = await sb.auth.getSession();
+    const resp = await fetch(`${SUPABASE_URL}/functions/v1/create-checkout-session`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`
+      },
+      body: JSON.stringify({ packId, siteUrl: window.location.href.split('?')[0] })
+    });
+    const data = await resp.json();
+    if(data.url){
+      window.location.href = data.url; // off to Stripe's hosted checkout page
+    } else {
+      showToast(data.error || 'Something went wrong starting checkout.', true);
+      if(btn) { btn.disabled = false; btn.textContent = 'Buy'; }
+    }
+  } catch(err){
+    showToast('Could not reach the payment server — try again in a moment.', true);
+    if(btn) { btn.disabled = false; btn.textContent = 'Buy'; }
+  }
+}
+// After Stripe redirects back, the webhook has (almost certainly) already
+// credited the bankroll server-side by the time the page reloads — this just
+// shows a friendly confirmation and refreshes the displayed balance.
+(function checkPurchaseRedirect(){
+  const params = new URLSearchParams(window.location.search);
+  const status = params.get('purchase');
+  if(status === 'success'){
+    window.history.replaceState({}, '', window.location.pathname);
+    setTimeout(async () => {
+      await loadProfile();
+      updateBankrollDisplay();
+      showToast('Purchase complete — your cash has been added!');
+    }, 800);
+  } else if(status === 'cancelled'){
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+})();
 const AD_REWARD = 150;
 const AD_DAILY_LIMIT = 3;
 const AD_DURATION_SECONDS = 5;
