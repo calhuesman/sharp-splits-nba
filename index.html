@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6815412715955699"
+     crossorigin="anonymous"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NBA Stat Guessing Game — Sharp Splits</title>
@@ -8,13 +10,13 @@
 <meta property="og:title" content="NBA Stat Guessing Game — Sharp Splits">
 <meta property="og:description" content="Guess real NBA players' season stat averages (PPG/RPG/APG), place fun-money bets, and climb the leaderboard.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://YOUR-NBA-DOMAIN-HERE/og-image.png">
+<meta property="og:image" content="https://sharp-splits-nba.netlify.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="NBA Stat Guessing Game — Sharp Splits">
 <meta name="twitter:description" content="Guess real NBA players' season stat averages (PPG/RPG/APG), place fun-money bets, and climb the leaderboard.">
-<meta name="twitter:image" content="https://YOUR-NBA-DOMAIN-HERE/og-image.png">
+<meta name="twitter:image" content="https://sharp-splits-nba.netlify.app/og-image.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8F%80</text></svg>">
 <style>
   :root{
@@ -605,7 +607,7 @@
     <div class="stat-grid" id="homeStats"></div>
     <div id="achievementsProgress" style="margin-top:10px;"></div>
     <div class="rules-box">
-      <strong>How it works:</strong> Each round reveals a real NBA player from the 2024-25 season (more seasons coming) — you'll see which stat right before the reveal. Point guards get quizzed on PPG or APG, wings (SG/SF) on PPG, and bigs (PF/C) on PPG or RPG. Score = how far off you were. Lower total across 5 rounds is better. 253 real player-seasons in the pool so far, across four seasons: 2022-23, 2023-24, 2024-25, and 2025-26, no repeats until everyone's been used, 8 seconds per guess.
+      <strong>How it works:</strong> Each round reveals a real NBA player from one of four real seasons (2022-23 through 2025-26) — you'll see which stat and season right before the reveal. Point guards get quizzed on PPG or APG, wings (SG/SF) on PPG, and bigs (PF/C) on PPG or RPG. Score = how far off you were. Lower total across 5 rounds is better. 253 real player-seasons in the pool so far, across four seasons: 2022-23, 2023-24, 2024-25, and 2025-26, no repeats until everyone's been used, 8 seconds per guess.
     </div>
     <button class="btn" onclick="goToBetting()">▶ Start a Game</button>
     <div class="btn-row">
@@ -899,7 +901,7 @@
       pricing tiers. Wiring this up needs a payment processor (Stripe/Apple/
       Google IAP) plus the backend from #1 so purchases attach to real
       accounts, not just a locally-typed name.
-   7) More seasons — only 2024-25 is in the pool right now (65 player-seasons).
+   7) More seasons — 2022-23 through 2025-26 are in the pool now (253 player-seasons).
       2020-2024 and 2025-26 are the clear next step, same research process
       used for the NFL sister version's 6-year pool.
    8) Player photos/face icons — deliberately NOT implemented. Real players'
@@ -2086,7 +2088,7 @@ async function editDisplayName(){
 const TUTORIAL_SLIDES = [
   {
     title: "👋 Welcome to Sharp Splits",
-    body: "Each round shows a real NBA player from the 2024-25 season (more seasons coming). Your job: guess their season stat average — points for everyone, assists for point guards, rebounds for forwards/centers. Closer guesses score better."
+    body: "Each round shows a real NBA player from one of four real seasons (2022-23 through 2025-26). Your job: guess their season stat average — points for everyone, assists for point guards, rebounds for forwards/centers. Closer guesses score better."
   },
   {
     title: "🏀 Know your stat",
