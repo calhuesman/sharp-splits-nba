@@ -554,6 +554,7 @@
   <div class="brand">
     <h1>🏀 Sharp Splits</h1>
     <div class="sub">2020-21 through 2025-26 Regular Seasons · Real stats via Fox Sports</div>
+    <div class="sub" style="font-size:0.72rem; opacity:0.65; margin-top:2px;">Free-to-play stat guessing game · Fun-money only, no real-money wagering</div>
   </div>
 
   <div class="topbar" id="topbar" style="display:none;">
@@ -627,7 +628,7 @@
     <div class="stat-grid" id="homeStats"></div>
     <div id="achievementsProgress" style="margin-top:10px;"></div>
     <div class="rules-box">
-      <strong>How it works:</strong> Each round reveals a real NBA player from one of six real seasons (2020-21 through 2025-26) — you'll see which stat and season right before the reveal. Point guards get quizzed on PPG or APG, wings (SG/SF) on PPG, and bigs (PF/C) on PPG or RPG. Score = how far off you were. Lower total across 5 rounds is better. 384 real player-seasons in the pool, across all six seasons: 2020-21 through 2025-26, no repeats until everyone's been used, 8 seconds per guess.
+      <strong>How it works:</strong> Each round reveals a real NBA player from one of six real seasons (2020-21 through 2025-26) — you'll see which stat and season right before the reveal. Point guards get quizzed on PPG or APG, wings (SG/SF) on PPG, and bigs (PF/C) on PPG or RPG. Score = how far off you were. Lower total across 5 rounds is better. 386 real player-seasons in the pool, across all six seasons: 2020-21 through 2025-26, no repeats until everyone's been used, 8 seconds per guess.
     </div>
     <button class="btn" onclick="goToBetting()">▶ Start a Game</button>
     <button class="btn secondary" id="dailyChallengeBtn" onclick="showDailyChallenge()" style="border-color:var(--gold); color:var(--gold);">📅 Daily Challenge</button>
@@ -868,6 +869,8 @@
   <div id="screen-daily-result" class="card hidden">
     <h2 style="margin-top:0;">📅 Today's Result</h2>
     <div id="dailyResultContent"></div>
+    <div class="share-box hidden" id="dailyShareBox"></div>
+    <button class="btn secondary" onclick="shareDailyResults()">📤 Share Results</button>
     <button class="btn" onclick="showDailyChallenge()">← Back to Daily Challenge</button>
   </div>
 
@@ -926,6 +929,7 @@
   </div>
 
   <div class="hint">Stats sourced from Fox Sports — <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2020" target="_blank">2020-21</a>, <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2021" target="_blank">2021-22</a>, <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2022" target="_blank">2022-23</a>, <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2023" target="_blank">2023-24</a>, <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2024" target="_blank">2024-25</a>, and <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2025" target="_blank">2025-26</a> NBA regular seasons. This is a fun-money game; no real wagering occurs. Your name, bankroll, and best score are stored so the leaderboard can show them to other players.</div>
+  <div class="hint" style="margin-top:6px;"><a class="src" href="./nba-about.html">About / How It Works</a> · <a class="src" href="./nba-faq.html">FAQ</a> · <a class="src" href="./nba-privacy.html">Privacy Policy</a> · <a class="src" href="./nba-contact.html">Contact</a></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -1387,7 +1391,10 @@ const PLAYERS = [
   {name:"Ricky Rubio", team:"MIN", pos:"PG", year:2021, statType:"APG", value:6.4, games:68, note:"Timberwolves' PG that season"},
   {name:"LaMelo Ball", team:"CHA", pos:"PG", year:2021, statType:"APG", value:6.1, games:51, note:"Hornets' rookie PG"},
   {name:"Malcolm Brogdon", team:"IND", pos:"PG", year:2021, statType:"APG", value:5.9, games:56, note:"Pacers' PG"},
-  {name:"Giannis Antetokounmpo", team:"MIL", pos:"PF", year:2021, statType:"APG", value:5.9, games:61, note:"Bucks' star forward, NBA champion, Finals MVP"}
+  {name:"Giannis Antetokounmpo", team:"MIL", pos:"PF", year:2021, statType:"APG", value:5.9, games:61, note:"Bucks' star forward, NBA champion, Finals MVP"},
+  // ===== 2025-26 APG DEPTH ADDITIONS (source: Fox Sports 2025-26 regular season assists stats) =====
+  {name:"Ryan Rollins", team:"MIL", pos:"PG", year:2026, statType:"APG", value:5.6, games:74, note:"Bucks' PG"},
+  {name:"Cam Spencer", team:"MEM", pos:"PG", year:2026, statType:"APG", value:5.6, games:72, note:"Grizzlies' PG"}
 ];
 
 const STAT_LABELS = {PPG:"Points Per Game", RPG:"Rebounds Per Game", APG:"Assists Per Game"};
@@ -1638,6 +1645,7 @@ async function fetchLeaderboard(){
     bestRoundDiff: (row.game_state||{}).bestRoundDiff ?? null,
     equippedFlair: row.equipped_flair,
     gamesPlayed: (row.game_state||{}).gamesPlayed || 0,
+    totalScoreSum: (row.game_state||{}).totalScoreSum || 0,
     perfectGuesses: (row.game_state||{}).perfectGuesses || 0,
     achievementCount: ((row.game_state||{}).achievements||[]).length,
     streakCount: (row.game_state||{}).streakCount || 0,
@@ -1667,14 +1675,22 @@ async function pushWeeklyLeaderboardEntry(){
 async function fetchWeeklyLeaderboard(){
   const wk = getWeekKey();
   const { data, error } = await sb.from('profiles')
-    .select('username,bankroll,week_start_bankroll,week_key,equipped_flair,game_state')
+    .select('username,bankroll,week_start_bankroll,week_key,equipped_flair,best_game_total,game_state')
     .eq('week_key', wk)
     .limit(50);
   if(error || !data) return [];
   return data.map(row => ({
     username: row.username,
+    bankroll: Number(row.bankroll),
     weeklyGain: Math.round(Number(row.bankroll) - Number(row.week_start_bankroll)),
     equippedFlair: row.equipped_flair,
+    bestGameTotal: row.best_game_total,
+    bestRoundDiff: (row.game_state||{}).bestRoundDiff ?? null,
+    gamesPlayed: (row.game_state||{}).gamesPlayed || 0,
+    totalScoreSum: (row.game_state||{}).totalScoreSum || 0,
+    perfectGuesses: (row.game_state||{}).perfectGuesses || 0,
+    achievementCount: ((row.game_state||{}).achievements||[]).length,
+    streakCount: (row.game_state||{}).streakCount || 0,
     prestigeLevel: (row.game_state||{}).prestigeLevel || 0,
     isCreator: (row.game_state||{}).isCreator || false
   }));
@@ -2774,7 +2790,7 @@ const STAR_NAMES = new Set([
 
 const oddsMap = {
   total: {comfortable:-150, sharp:140, elite:380},
-  closest: {under2:-200, under1:120},
+  closest: {under1:-140, underHalf:170}, // tightened from under2/under1 — those were too easy to hit with 5 chances to land just one good guess
   worst: {under5:-150, under3:140},
   perfect: {yes:1200},
   hothand: {yes:130},
@@ -2922,13 +2938,9 @@ function oddsText(n){ return (n>0?'+':'') + n; }
 
 function renderBettingScreen(){
   const L = currentTotalLines;
-  const avgLine = L.avg !== null
-    ? `Locked in for this 4-hour window based on your recent median (${L.avg.toFixed(1)} off) — refreshes every 4 hours, so a bad game on purpose won't loosen anything until the next window.`
-    : `No game history yet — these are starter lines. They'll start personalizing (every 4 hours) after your first game.`;
 
   document.getElementById('bettingDynamic').innerHTML = `
     <h3>Total Score — Under (sum of all 5 diffs)</h3>
-    <p class="muted" style="margin-top:-6px;">${avgLine}</p>
     <div class="bet-row">
       <label class="bet-option"><span><input type="radio" name="bet-total" value="comfortable"> Under ${L.comfortable.toFixed(1)} <span class="muted">(Comfortable)</span></span><span class="odds">${oddsText(oddsMap.total.comfortable)}</span></label>
       <label class="bet-option"><span><input type="radio" name="bet-total" value="sharp"> Under ${L.sharp.toFixed(1)} <span class="muted">(Sharp)</span></span><span class="odds">${oddsText(oddsMap.total.sharp)}</span></label>
@@ -2940,8 +2952,8 @@ function renderBettingScreen(){
     <h3>Best Round — Under (your single closest guess)</h3>
     <p class="muted" style="margin-top:-6px;">You only need ONE of your 5 guesses to land this — priced accordingly. PPG rounds count on a scaled-down basis here (points swing a lot more than rebounds or assists), so a PPG miss doesn't tank this bet unfairly.</p>
     <div class="bet-row">
-      <label class="bet-option"><span><input type="radio" name="bet-closest" value="under2"> Best round under 2 off</span><span class="odds">${oddsText(oddsMap.closest.under2)}</span></label>
       <label class="bet-option"><span><input type="radio" name="bet-closest" value="under1"> Best round under 1 off</span><span class="odds">${oddsText(oddsMap.closest.under1)}</span></label>
+      <label class="bet-option"><span><input type="radio" name="bet-closest" value="underHalf"> Best round under 0.5 off</span><span class="odds">${oddsText(oddsMap.closest.underHalf)}</span></label>
       <label class="bet-option"><span><input type="radio" name="bet-closest" value="none" checked> No bet</span><span class="odds">—</span></label>
       ${stakeInputBlock('closest')}
     </div>
@@ -2963,7 +2975,7 @@ function renderBettingScreen(){
     </div>
 
     <h3>Star Power <span class="muted" style="font-weight:400;">(pure luck of the draw)</span> <button type="button" class="info-icon-btn" onclick="showStarList()" aria-label="Which players count as stars">ⓘ</button></h3>
-    <p class="muted" style="margin-top:-6px;">115 of the 384 player-seasons belong to a league star (tap the ⓘ to see who). This is about who you're dealt, not how well you guess.</p>
+    <p class="muted" style="margin-top:-6px;">115 of the 386 player-seasons belong to a league star (tap the ⓘ to see who). This is about who you're dealt, not how well you guess.</p>
     <div class="bet-row">
       <label class="bet-option"><span><input type="radio" name="bet-starpower" value="yes"> At least 1 star gets drawn</span><span class="odds">${oddsText(oddsMap.starpower.yes)}</span></label>
       <label class="bet-option"><span><input type="radio" name="bet-starpower" value="no"> No stars get drawn</span><span class="odds">${oddsText(oddsMap.starpower.no)}</span></label>
@@ -2972,7 +2984,7 @@ function renderBettingScreen(){
     </div>
 
     <h3>Season Spread <span class="muted" style="font-weight:400;">(pure luck of the draw)</span></h3>
-    <p class="muted" style="margin-top:-6px;">384 player-seasons span six seasons — 2020-21 through 2025-26. Will your hand of 5 spread across most of them, or stay bunched up?</p>
+    <p class="muted" style="margin-top:-6px;">386 player-seasons span six seasons — 2020-21 through 2025-26. Will your hand of 5 spread across most of them, or stay bunched up?</p>
     <div class="bet-row">
       <label class="bet-option"><span><input type="radio" name="bet-yearmix" value="yes"> 4+ different seasons get drawn</span><span class="odds">${oddsText(oddsMap.yearmix.yes)}</span></label>
       <label class="bet-option"><span><input type="radio" name="bet-yearmix" value="no"> 3 or fewer different seasons</span><span class="odds">${oddsText(oddsMap.yearmix.no)}</span></label>
@@ -3636,7 +3648,7 @@ async function finishGame(){
   }
   if(bets.closest){
     const c = bets.closest.choice;
-    const line = c === "under2" ? 2 : 1;
+    const line = c === "under1" ? 1 : 0.5;
     resolve("closest", `Best Round Under ${line}`, closest < line);
   }
   if(bets.worst){
@@ -3675,6 +3687,7 @@ async function finishGame(){
   const bankrollBeforeThisChange = profile.bankroll;
   profile.bankroll += totalReturn; // add back winnings (+ returned stakes); losses were already deducted upfront
   profile.gamesPlayed += 1;
+  profile.totalScoreSum = (profile.totalScoreSum||0) + totalScore; // running sum so we can show a true average score, not just best-ever
   profile.gameWinStreak = netProfit > 0 ? (profile.gameWinStreak||0) + 1 : 0;
   if(!gameBoosted){
     profile.bestGameTotal = (profile.bestGameTotal === null || profile.bestGameTotal === undefined) ? totalScore : Math.min(profile.bestGameTotal, totalScore);
@@ -4476,6 +4489,9 @@ async function finishDuelGame(){
 // trip is needed to agree on the deck; everyone's copy of PLAYERS is
 // identical (it ships in this file), and the date is universal.
 const DAILY_COMPLETION_REWARD = 300; // flat, not skill-scaled — no betting on a deck everyone already knows
+let lastDailyRank = 0;
+let lastDailyBoardSize = 0;
+let lastDailyTotal = 0;
 
 function mulberry32(seed){
   return function(){
@@ -4594,6 +4610,9 @@ async function finishDailyChallenge(){
   const board = await fetchDailyLeaderboard(dateKey);
   const myRank = board.findIndex(r => r.username === profile.username) + 1;
   if(myRank > 0 && myRank <= 3) unlockAchievement('daily_top3');
+  lastDailyRank = myRank;
+  lastDailyBoardSize = board.length;
+  lastDailyTotal = totalScore;
 
   saveInBackground(saveProfile);
   updateBankrollDisplay();
@@ -4609,6 +4628,22 @@ async function finishDailyChallenge(){
   `;
   if(myRank === 1) celebrate(`🥇 #1 on today's Daily Challenge!<br>${totalScore.toFixed(1)} off`);
   show('screen-daily-result');
+}
+
+function shareDailyResults(){
+  const dateStr = todayUTC();
+  const emojiRow = guesses.map(g => g.diff <= 1.5 ? '🟩' : g.diff <= 4 ? '🟨' : '🟥').join('');
+  const rankLine = lastDailyRank > 0 ? `Rank: #${lastDailyRank} of ${lastDailyBoardSize}\n` : '';
+  const streakLine = profile.dailyStreak > 0 ? `🔥 ${profile.dailyStreak} day streak\n` : '';
+  const text = `📅 Sharp Splits Daily — ${dateStr}\n${emojiRow}  ${lastDailyTotal.toFixed(1)} off (5 rounds)\n${rankLine}${streakLine}Play today's 5: ${window.location.href}`;
+  const box = document.getElementById('dailyShareBox');
+  box.textContent = text;
+  box.classList.remove('hidden');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>showToast('Copied to clipboard!')).catch(()=>showToast('Copy failed — text shown below', true));
+  } else {
+    showToast('Copy the text below manually');
+  }
 }
 
 function renderLeaderboard(){
@@ -4710,12 +4745,14 @@ function showLbInfo(evt, index, which){
   if(!e) return;
   const rank = getRank(e.bankroll||0);
   const flairDef = e.equippedFlair ? FLAIR_DEFS.find(f=>f.id===e.equippedFlair) : null;
+  const avgScore = (e.gamesPlayed > 0 && e.totalScoreSum) ? (e.totalScoreSum / e.gamesPlayed) : null;
   const rows = [
     ['Rank Tier', `${rank.icon} ${rank.name}`],
     ['Prestige', e.prestigeLevel > 0 ? `⭐ Level ${e.prestigeLevel}` : '—'],
     ['Creator', e.isCreator ? '🎖️ Yes' : '—'],
     ['Bankroll', fmtMoney(e.bankroll||0)],
     ['Games Played', e.gamesPlayed ?? '—'],
+    ['Average Score', avgScore !== null ? `${avgScore.toFixed(1)} off` : '—'],
     ['Best Game Total', e.bestGameTotal !== undefined && e.bestGameTotal !== null ? `${e.bestGameTotal.toFixed(1)}` : '—'],
     ['Best Single Round', e.bestRoundDiff !== undefined && e.bestRoundDiff !== null ? `${e.bestRoundDiff.toFixed(1)}` : '—'],
     ['Exact Guesses', e.perfectGuesses ?? 0],
