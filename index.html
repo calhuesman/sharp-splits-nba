@@ -628,10 +628,13 @@
     <div class="stat-grid" id="homeStats"></div>
     <div id="achievementsProgress" style="margin-top:10px;"></div>
     <div class="rules-box">
-      <strong>How it works:</strong> Each round reveals a real NBA player from one of six real seasons (2020-21 through 2025-26) — you'll see which stat and season right before the reveal. Point guards get quizzed on PPG or APG, wings (SG/SF) on PPG, and bigs (PF/C) on PPG or RPG. Score = how far off you were. Lower total across 5 rounds is better. 386 real player-seasons in the pool, across all six seasons: 2020-21 through 2025-26, no repeats until everyone's been used, 8 seconds per guess.
+      <strong>How it works:</strong> Each round reveals a real NBA player from one of six real seasons (2020-21 through 2025-26) — you'll see which stat and season right before the reveal. Point guards usually get quizzed on PPG or APG, wings (SG/SF) on PPG, and bigs (PF/C) on PPG or RPG — with a handful of deliberate exceptions for players who were genuinely elite at a stat outside their usual lane (you'll see a ⭐ note when that's the case). Score = how far off you were. Lower total across 5 rounds is better. 404 real player-seasons in the pool, across all six seasons: 2020-21 through 2025-26, no repeats until everyone's been used, 8 seconds per guess.
     </div>
     <button class="btn" onclick="goToBetting()">▶ Start a Game</button>
-    <button class="btn secondary" id="dailyChallengeBtn" onclick="showDailyChallenge()" style="border-color:var(--gold); color:var(--gold);">📅 Daily Challenge</button>
+    <button class="btn" id="dailyChallengeBtn" onclick="showDailyChallenge()" style="background:linear-gradient(180deg, #ffd166, var(--gold)); color:#1a1200; border:none; font-weight:800; box-shadow:0 2px 10px rgba(255,209,102,0.35); display:flex; align-items:center; justify-content:center; gap:8px;">
+      <span id="dailyChallengeBtnText">📅 Daily Challenge</span>
+      <span id="dailyChallengeStreakBadge" style="display:none; background:rgba(26,18,0,0.18); border-radius:20px; padding:2px 10px; font-size:0.82rem; font-weight:800;"></span>
+    </button>
     <div class="btn-row">
       <button class="btn secondary" onclick="showLeaderboard()">🏆 Leaderboard</button>
       <button class="btn secondary" onclick="showShop()">🛍️ Shop</button>
@@ -701,6 +704,7 @@
     <div class="player-stats-row" id="playerStatsRow"></div>
     <div class="player-meta" id="playerMeta"></div>
     <div class="stat-target" id="statTarget"></div>
+    <div class="hint" id="outlierNote" style="display:none; text-align:center; margin-top:-4px; margin-bottom:6px;"></div>
     <input type="number" id="guessInput" placeholder="Your guess (e.g. 24.5)" step="0.1" inputmode="decimal" autocomplete="off">
     <button class="btn" id="submitGuessBtn" onclick="manualSubmit()">Submit Guess</button>
     <button class="reroll-btn" id="rerollBtn" onclick="rerollPlayer()">🔄 Re-roll this player — $150</button>
@@ -1394,12 +1398,42 @@ const PLAYERS = [
   {name:"Giannis Antetokounmpo", team:"MIL", pos:"PF", year:2021, statType:"APG", value:5.9, games:61, note:"Bucks' star forward, NBA champion, Finals MVP"},
   // ===== 2025-26 APG DEPTH ADDITIONS (source: Fox Sports 2025-26 regular season assists stats) =====
   {name:"Ryan Rollins", team:"MIL", pos:"PG", year:2026, statType:"APG", value:5.6, games:74, note:"Bucks' PG"},
-  {name:"Cam Spencer", team:"MEM", pos:"PG", year:2026, statType:"APG", value:5.6, games:72, note:"Grizzlies' PG"}
+  {name:"Cam Spencer", team:"MEM", pos:"PG", year:2026, statType:"APG", value:5.6, games:72, note:"Grizzlies' PG"},
+  // ===== 2025-26 RPG DEPTH ADDITIONS for existing PF/C players (source: Fox Sports 2025-26 rebounding stats) =====
+  {name:"Nikola Jokic", team:"DEN", pos:"C", year:2026, statType:"RPG", value:12.9, games:65, note:"Nuggets' star C"},
+  {name:"Victor Wembanyama", team:"SAS", pos:"C", year:2026, statType:"RPG", value:11.5, games:64, note:"Spurs' C"},
+  {name:"Jalen Johnson", team:"ATL", pos:"PF", year:2026, statType:"RPG", value:10.3, games:72, note:"Hawks' PF"},
+  {name:"Domantas Sabonis", team:"SAC", pos:"C", year:2026, statType:"RPG", value:11.4, games:19, note:"Kings' C"},
+  {name:"Anthony Davis", team:"WAS", pos:"PF", year:2026, statType:"RPG", value:11.1, games:20, note:"Wizards' PF"},
+  {name:"Jusuf Nurkic", team:"UTA", pos:"C", year:2026, statType:"RPG", value:10.4, games:41, note:"Jazz' C"},
+  {name:"Ivica Zubac", team:"IND", pos:"C", year:2026, statType:"RPG", value:10.6, games:48, note:"Pacers' C, mid-season trade from LA Clippers"},
+  {name:"Paolo Banchero", team:"ORL", pos:"PF", year:2026, statType:"RPG", value:8.4, games:72, note:"Magic's PF"},
+  {name:"Zach Edey", team:"MEM", pos:"C", year:2026, statType:"RPG", value:11.1, games:11, note:"Grizzlies' C"},
+  {name:"Giannis Antetokounmpo", team:"MIA", pos:"PF", year:2026, statType:"RPG", value:9.8, games:36, note:"Heat's PF"},
+  {name:"Isaiah Hartenstein", team:"OKC", pos:"C", year:2026, statType:"RPG", value:9.4, games:47, note:"Thunder's C"},
+  {name:"Walker Kessler", team:"LAL", pos:"C", year:2026, statType:"RPG", value:10.8, games:5, note:"Lakers' C"},
+  // ===== 2024-25 RPG DEPTH ADDITIONS (source: Fox Sports 2024-25 rebounding stats) =====
+  {name:"Scottie Barnes", team:"TOR", pos:"PF", year:2025, statType:"RPG", value:7.7, games:65, note:"Raptors' PF"},
+  {name:"Amen Thompson", team:"HOU", pos:"PF", year:2025, statType:"RPG", value:8.2, games:69, note:"Rockets' PF"},
+  {name:"Miles Bridges", team:"CHA", pos:"PF", year:2025, statType:"RPG", value:7.5, games:64, note:"Hornets' PF"},
+  // Deliberate outliers — genuinely elite at rebounding outside their usual position's lane
+  {name:"Jayson Tatum", team:"BOS", pos:"SF", year:2025, statType:"RPG", value:8.7, games:72, note:"Celtics' SF — rare rebounding numbers for a wing"},
+  {name:"LeBron James", team:"LAL", pos:"SF", year:2025, statType:"RPG", value:7.8, games:70, note:"Lakers' SF — elite all-around rebounding for a wing"},
+  {name:"Josh Giddey", team:"CHI", pos:"PG", year:2025, statType:"RPG", value:8.1, games:70, note:"Bulls' PG — unusually strong rebounding for a guard"}
 ];
 
 const STAT_LABELS = {PPG:"Points Per Game", RPG:"Rebounds Per Game", APG:"Assists Per Game"};
 function seasonLabel(year){ return `${year-1}-${String(year).slice(2)}`; }
 function statLabelFor(p){ return `${seasonLabel(p.year)} ${STAT_LABELS[p.statType]}`; }
+// A small, deliberate set of entries break the normal position-stat rule on
+// purpose — a few players were genuinely elite at a stat outside their usual
+// position's lane (Jokic's passing, Westbrook's rebounding, etc.). This flags
+// those specific rounds so it reads as an intentional feature, not a bug.
+function isOutlierStat(p){
+  if(p.statType === 'RPG' && (p.pos === 'PG' || p.pos === 'SG' || p.pos === 'SF')) return true;
+  if(p.statType === 'APG' && (p.pos === 'PF' || p.pos === 'C')) return true;
+  return false;
+}
 function playerKey(p){ return `${p.name}|${p.year}|${p.statType}`; }
 // 2025 has the most players in the pool (it's the newest season and people are into
 // it), so a fully uniform random draw would make it dominate nearly a third of every
@@ -1808,9 +1842,9 @@ const THEME_DEFS = [
 ];
 const FLAIR_DEFS = [
   {id:'fire', emoji:'🔥', name:'On Fire', cost:150, tier:'common'},
-  {id:'crown', emoji:'👑', name:'Crowned', cost:200, tier:'common'},
-  {id:'goat', emoji:'🐐', name:'GOAT', cost:250, tier:'common'},
-  {id:'diamond', emoji:'💎', name:'Diamond Hands', cost:300, tier:'common'},
+  {id:'crown', emoji:'🎩', name:'Magician', cost:200, tier:'common'},
+  {id:'goat', emoji:'🏔️', name:'The Peak', cost:250, tier:'common'},
+  {id:'diamond', emoji:'🙌', name:'Never Folding', cost:300, tier:'common'},
   {id:'rocket', emoji:'🚀', name:'To The Moon', cost:150, tier:'common'},
   {id:'target', emoji:'🎯', name:'Sharpshooter', cost:200, tier:'common'},
   {id:'lightning', emoji:'⚡', name:'Lightning', cost:200, tier:'common'},
@@ -1819,7 +1853,7 @@ const FLAIR_DEFS = [
   {id:'shark', emoji:'🦈', name:'Shark', cost:300, tier:'common'},
   {id:'ghost', emoji:'👻', name:'Ghost', cost:200, tier:'common'},
   {id:'diamond_elite', emoji:'💠', name:'Diamond Elite', cost:1500, tier:'legendary'},
-  {id:'trophy_elite', emoji:'🏆', name:'Champion', cost:2500, tier:'legendary'}
+  {id:'trophy_elite', emoji:'🎊', name:'Confetti', cost:2500, tier:'legendary'}
 ];
 const CUSTOM_ACCENT_COST = 3000;
 const REROLL_BUNDLE_COST = 400; // 3 re-rolls for 400 instead of 450 one-at-a-time
@@ -2112,6 +2146,7 @@ function goHome(){
   updateBankrollDisplay();
   renderHomeStats();
   renderDailyBonusBanner();
+  renderDailyChallengeButton();
   renderAdWatchBanner();
   renderAchievementsProgress();
   document.getElementById('rankProgress').innerHTML = rankProgressHTML(profile.bankroll);
@@ -2702,9 +2737,9 @@ function showAchievements(){
 }
 
 const RANK_TIERS = [
-  {name:'Rookie', min:0, icon:'🥉'},
-  {name:'Pro', min:10000, icon:'🥈'},
-  {name:'All-Pro', min:25000, icon:'🥇'},
+  {name:'Rookie', min:0, icon:'🔰'},
+  {name:'Pro', min:10000, icon:'🛡️'},
+  {name:'All-Pro', min:25000, icon:'🔱'},
   {name:'MVP', min:60000, icon:'🏆'},
   {name:'Legend', min:150000, icon:'💎'},
   {name:'GOAT', min:350000, icon:'🐐'},
@@ -2975,7 +3010,7 @@ function renderBettingScreen(){
     </div>
 
     <h3>Star Power <span class="muted" style="font-weight:400;">(pure luck of the draw)</span> <button type="button" class="info-icon-btn" onclick="showStarList()" aria-label="Which players count as stars">ⓘ</button></h3>
-    <p class="muted" style="margin-top:-6px;">115 of the 386 player-seasons belong to a league star (tap the ⓘ to see who). This is about who you're dealt, not how well you guess.</p>
+    <p class="muted" style="margin-top:-6px;">120 of the 404 player-seasons belong to a league star (tap the ⓘ to see who). This is about who you're dealt, not how well you guess.</p>
     <div class="bet-row">
       <label class="bet-option"><span><input type="radio" name="bet-starpower" value="yes"> At least 1 star gets drawn</span><span class="odds">${oddsText(oddsMap.starpower.yes)}</span></label>
       <label class="bet-option"><span><input type="radio" name="bet-starpower" value="no"> No stars get drawn</span><span class="odds">${oddsText(oddsMap.starpower.no)}</span></label>
@@ -2984,7 +3019,7 @@ function renderBettingScreen(){
     </div>
 
     <h3>Season Spread <span class="muted" style="font-weight:400;">(pure luck of the draw)</span></h3>
-    <p class="muted" style="margin-top:-6px;">386 player-seasons span six seasons — 2020-21 through 2025-26. Will your hand of 5 spread across most of them, or stay bunched up?</p>
+    <p class="muted" style="margin-top:-6px;">404 player-seasons span six seasons — 2020-21 through 2025-26. Will your hand of 5 spread across most of them, or stay bunched up?</p>
     <div class="bet-row">
       <label class="bet-option"><span><input type="radio" name="bet-yearmix" value="yes"> 4+ different seasons get drawn</span><span class="odds">${oddsText(oddsMap.yearmix.yes)}</span></label>
       <label class="bet-option"><span><input type="radio" name="bet-yearmix" value="no"> 3 or fewer different seasons</span><span class="odds">${oddsText(oddsMap.yearmix.no)}</span></label>
@@ -3280,6 +3315,13 @@ function displayCurrentPlayer(){
   document.getElementById('playerName').textContent = p.name;
   document.getElementById('playerMeta').textContent = p.note;
   document.getElementById('statTarget').textContent = `Guess: ${statLabelFor(p)}`;
+  const outlierEl = document.getElementById('outlierNote');
+  if(isOutlierStat(p)){
+    outlierEl.textContent = `⭐ Rare for this position — ${p.name.split(' ').pop()} was genuinely elite at this`;
+    outlierEl.style.display = 'block';
+  } else {
+    outlierEl.style.display = 'none';
+  }
 
   const statsRow = document.getElementById('playerStatsRow');
   const pills = [];
@@ -4543,6 +4585,24 @@ async function fetchDailyLeaderboard(dateKey){
   return data;
 }
 
+function renderDailyChallengeButton(){
+  const textEl = document.getElementById('dailyChallengeBtnText');
+  const badge = document.getElementById('dailyChallengeStreakBadge');
+  if(!textEl || !badge) return;
+  const streak = profile.dailyStreak || 0;
+  if(dailyAlreadyPlayedToday()){
+    textEl.textContent = "📅 See Today's Results";
+  } else {
+    textEl.textContent = "📅 Play Today's Daily Challenge";
+  }
+  if(streak > 0){
+    badge.textContent = `🔥 ${streak}`;
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
 async function showDailyChallenge(){
   show('screen-daily');
   const dateKey = todayUTC();
@@ -4665,7 +4725,7 @@ function renderLeaderboard(){
       const flair = flairDef ? ` ${flairDef.emoji}` : '';
       const rank = getRank(e.bankroll||0);
       const removeBtn = you ? '' : `<button class="close-x" style="width:22px; height:22px; font-size:0.65rem; margin-left:6px;" onclick="event.stopPropagation(); removeFriend('${e.username.replace(/'/g,"\\'")}')">✕</button>`;
-      return `<div class="lb-row" onclick="showLbInfo(event, ${i}, 'friends')" oncontextmenu="showLbInfo(event, ${i}, 'friends')"><span><span class="lb-rank">#${i+1}</span><span title="${rank.name}">${rank.icon}</span> <span class="lb-name">${escapeHtml(e.username)}${e.isCreator ? " 🎖️" : ""}${e.prestigeLevel > 0 ? ` ⭐${e.prestigeLevel > 1 ? "x"+e.prestigeLevel : ""}` : ""}${flair}${you?' (you)':''}</span></span><span style="display:flex; align-items:center;"><span class="lb-val">${fmtMoney(e.bankroll)}</span>${removeBtn}</span></div>`;
+      return `<div class="lb-row" onclick="showLbInfo(event, ${i}, 'friends')" oncontextmenu="showLbInfo(event, ${i}, 'friends')"><span><span class="lb-rank">${i<3 ? ['🥇','🥈','🥉'][i] : '#'+(i+1)}</span> <span class="lb-name">${escapeHtml(e.username)}${e.isCreator ? " 🎖️" : ""}${e.prestigeLevel > 0 ? ` ⭐${e.prestigeLevel > 1 ? "x"+e.prestigeLevel : ""}` : ""}${flair}${you?' (you)':''} <span title="${rank.name}" style="opacity:0.65; font-size:0.85em;">${rank.icon}</span></span></span><span style="display:flex; align-items:center;"><span class="lb-val">${fmtMoney(e.bankroll)}</span>${removeBtn}</span></div>`;
     }).join('');
     window._lbFriendsSorted = sorted;
     return;
@@ -4685,7 +4745,7 @@ function renderLeaderboard(){
       const rank = getRank(e.bankroll||0);
       const gain = e.weeklyGain || 0;
       const val = (gain >= 0 ? '+' : '') + fmtMoney(gain);
-      return `<div class="lb-row" onclick="showLbInfo(event, ${i}, 'week')" oncontextmenu="showLbInfo(event, ${i}, 'week')"><span><span class="lb-rank">#${i+1}</span><span title="${rank.name}">${rank.icon}</span> <span class="lb-name">${escapeHtml(e.username)}${e.isCreator ? " 🎖️" : ""}${e.prestigeLevel > 0 ? ` ⭐${e.prestigeLevel > 1 ? "x"+e.prestigeLevel : ""}` : ""}${flair}${you}</span></span><span class="lb-val">${val}</span></div>`;
+      return `<div class="lb-row" onclick="showLbInfo(event, ${i}, 'week')" oncontextmenu="showLbInfo(event, ${i}, 'week')"><span><span class="lb-rank">${i<3 ? ['🥇','🥈','🥉'][i] : '#'+(i+1)}</span> <span class="lb-name">${escapeHtml(e.username)}${e.isCreator ? " 🎖️" : ""}${e.prestigeLevel > 0 ? ` ⭐${e.prestigeLevel > 1 ? "x"+e.prestigeLevel : ""}` : ""}${flair}${you} <span title="${rank.name}" style="opacity:0.65; font-size:0.85em;">${rank.icon}</span></span></span><span class="lb-val">${val}</span></div>`;
     }).join('');
     window._lbWeekSorted = sorted;
     return;
@@ -4710,7 +4770,7 @@ function renderLeaderboard(){
     const flairDef = e.equippedFlair ? FLAIR_DEFS.find(f=>f.id===e.equippedFlair) : null;
     const flair = flairDef ? ` ${flairDef.emoji}` : '';
     const rank = getRank(e.bankroll||0);
-    return `<div class="lb-row" onclick="showLbInfo(event, ${i}, 'main')" oncontextmenu="showLbInfo(event, ${i}, 'main')"><span><span class="lb-rank">#${i+1}</span><span title="${rank.name}">${rank.icon}</span> <span class="lb-name">${escapeHtml(e.username)}${e.isCreator ? " 🎖️" : ""}${e.prestigeLevel > 0 ? ` ⭐${e.prestigeLevel > 1 ? "x"+e.prestigeLevel : ""}` : ""}${flair}${you}</span></span><span class="lb-val">${val}</span></div>`;
+    return `<div class="lb-row" onclick="showLbInfo(event, ${i}, 'main')" oncontextmenu="showLbInfo(event, ${i}, 'main')"><span><span class="lb-rank">${i<3 ? ['🥇','🥈','🥉'][i] : '#'+(i+1)}</span> <span class="lb-name">${escapeHtml(e.username)}${e.isCreator ? " 🎖️" : ""}${e.prestigeLevel > 0 ? ` ⭐${e.prestigeLevel > 1 ? "x"+e.prestigeLevel : ""}` : ""}${flair}${you} <span title="${rank.name}" style="opacity:0.65; font-size:0.85em;">${rank.icon}</span></span></span><span class="lb-val">${val}</span></div>`;
   }).join('');
   window._lbMainSorted = sorted;
 }
@@ -4749,7 +4809,7 @@ function showLbInfo(evt, index, which){
   const rows = [
     ['Rank Tier', `${rank.icon} ${rank.name}`],
     ['Prestige', e.prestigeLevel > 0 ? `⭐ Level ${e.prestigeLevel}` : '—'],
-    ['Creator', e.isCreator ? '🎖️ Yes' : '—'],
+    e.isCreator ? ['Creator', '🎖️ Yes'] : null,
     ['Bankroll', fmtMoney(e.bankroll||0)],
     ['Games Played', e.gamesPlayed ?? '—'],
     ['Average Score', avgScore !== null ? `${avgScore.toFixed(1)} off` : '—'],
@@ -4758,7 +4818,7 @@ function showLbInfo(evt, index, which){
     ['Exact Guesses', e.perfectGuesses ?? 0],
     ['Achievements', e.achievementCount ?? 0],
     ['Daily Streak', e.streakCount ?? 0]
-  ];
+  ].filter(Boolean);
   const box = document.createElement('div');
   box.className = 'lb-info-overlay';
   box.innerHTML = `
