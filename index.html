@@ -933,7 +933,7 @@
   </div>
 
   <div class="hint">Stats sourced from Fox Sports — <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2020" target="_blank">2020-21</a>, <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2021" target="_blank">2021-22</a>, <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2022" target="_blank">2022-23</a>, <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2023" target="_blank">2023-24</a>, <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2024" target="_blank">2024-25</a>, and <a class="src" href="https://www.foxsports.com/nba/stats?category=scoring&season=2025" target="_blank">2025-26</a> NBA regular seasons. This is a fun-money game; no real wagering occurs. Your name, bankroll, and best score are stored so the leaderboard can show them to other players.</div>
-  <div class="hint" style="margin-top:6px;"><a class="src" href="./nba-about.html">About / How It Works</a> · <a class="src" href="./nba-faq.html">FAQ</a> · <a class="src" href="./nba-privacy.html">Privacy Policy</a> · <a class="src" href="./nba-contact.html">Contact</a></div>
+  <div class="hint" style="margin-top:6px;"><a class="src" href="./nba-about.html">About / How It Works</a> · <a class="src" href="./nba-faq.html">FAQ</a> · <a class="src" href="./nba-privacy.html">Privacy Policy</a> · <a class="src" href="./nba-terms.html">Terms of Service</a> · <a class="src" href="./nba-contact.html">Contact</a></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -1757,6 +1757,36 @@ function subscribeLeaderboardRealtime(){
 // ---------- INIT ----------
 async function init(){
   show('screen-loading');
+
+  // Supabase redirects back here with an error in the URL hash if a password
+  // reset (or other magic) link was expired or already used — without this
+  // check, that error is silently swallowed and the person just lands on the
+  // signup screen with no explanation, which is exactly the confusing
+  // behavior this is here to prevent.
+  const hashParams = new URLSearchParams(window.location.hash.slice(1));
+  if(hashParams.get('error') === 'access_denied' || hashParams.get('error_code')){
+    const code = hashParams.get('error_code');
+    window.history.replaceState({}, '', window.location.pathname);
+    renderAuthMode();
+    show('screen-forgot-password');
+    const errEl = document.getElementById('forgotError');
+    if(errEl){
+      errEl.textContent = code === 'otp_expired'
+        ? "That reset link expired — enter your email below and we'll send you a fresh one."
+        : "That link was invalid or already used — enter your email below to get a new one.";
+    }
+    return;
+  }
+
+  // A valid recovery link also logs you into a temporary session (that's how
+  // Supabase lets you set a new password at all) — so without this check,
+  // init()'s normal "there's a session, go to home" logic below would win a
+  // race against the recovery screen and skip straight past it.
+  if(hashParams.get('type') === 'recovery'){
+    show('screen-new-password');
+    return;
+  }
+
   const { data: { session } } = await sb.auth.getSession();
   if(!session || !session.user){
     renderAuthMode();
