@@ -628,7 +628,7 @@
     <div class="stat-grid" id="homeStats"></div>
     <div id="achievementsProgress" style="margin-top:10px;"></div>
     <div class="rules-box">
-      <strong>How it works:</strong> Each round reveals a real NBA player from one of six real seasons (2020-21 through 2025-26) — you'll see which stat and season right before the reveal. Point guards usually get quizzed on PPG or APG, wings (SG/SF) on PPG, and bigs (PF/C) on PPG or RPG — with a handful of deliberate exceptions for players who were genuinely elite at a stat outside their usual lane (you'll see a ⭐ note when that's the case). Score = how far off you were. Lower total across 5 rounds is better. 404 real player-seasons in the pool, across all six seasons: 2020-21 through 2025-26, no repeats until everyone's been used, 8 seconds per guess.
+      <strong>How it works:</strong> Each round reveals a real NBA player from one of six real seasons (2020-21 through 2025-26) — you'll see which stat and season right before the reveal. Point guards usually get quizzed on PPG or APG, wings (SG/SF) on PPG, and bigs (PF/C) on PPG or RPG — with a handful of deliberate exceptions for players who were genuinely elite at a stat outside their usual lane (you'll see a ⭐ note when that's the case). Score = how far off you were. Lower total across 5 rounds is better. 427 real player-seasons in the pool, across all six seasons: 2020-21 through 2025-26, no repeats until everyone's been used, 8 seconds per guess.
     </div>
     <button class="btn" onclick="goToBetting()">▶ Start a Game</button>
     <button class="btn" id="dailyChallengeBtn" onclick="showDailyChallenge()" style="background:linear-gradient(180deg, #ffd166, var(--gold)); color:#1a1200; border:none; font-weight:800; box-shadow:0 2px 10px rgba(255,209,102,0.35); display:flex; align-items:center; justify-content:center; gap:8px;">
@@ -1419,7 +1419,41 @@ const PLAYERS = [
   // Deliberate outliers — genuinely elite at rebounding outside their usual position's lane
   {name:"Jayson Tatum", team:"BOS", pos:"SF", year:2025, statType:"RPG", value:8.7, games:72, note:"Celtics' SF — rare rebounding numbers for a wing"},
   {name:"LeBron James", team:"LAL", pos:"SF", year:2025, statType:"RPG", value:7.8, games:70, note:"Lakers' SF — elite all-around rebounding for a wing"},
-  {name:"Josh Giddey", team:"CHI", pos:"PG", year:2025, statType:"RPG", value:8.1, games:70, note:"Bulls' PG — unusually strong rebounding for a guard"}
+  {name:"Josh Giddey", team:"CHI", pos:"PG", year:2025, statType:"RPG", value:8.1, games:70, note:"Bulls' PG — unusually strong rebounding for a guard"},
+  // ===== 2023-24 RPG DEPTH ADDITIONS (source: Fox Sports 2023-24 rebounding stats) — only these 3 were
+  // genuinely new; the other 9 candidates from this same fetch turned out to already exist correctly
+  // under year:2024 (this game's internal year field uses the season's END year, so "2023-24" = year:2024,
+  // not year:2023 — caught and fixed before it became a real mislabeling bug) =====
+  {name:"Luka Doncic", team:"DAL", pos:"PG", year:2024, statType:"RPG", value:9.2, games:70, note:"Mavericks' PG — rare rebounding numbers for a guard"},
+  {name:"Jayson Tatum", team:"BOS", pos:"SF", year:2024, statType:"RPG", value:8.1, games:74, note:"Celtics' SF — rare rebounding numbers for a wing"},
+  {name:"Josh Hart", team:"NYK", pos:"SG", year:2024, statType:"RPG", value:8.3, games:81, note:"Knicks' SG — unusually strong rebounding for a guard"},
+  // ===== 2021-22 RPG DEPTH ADDITIONS (source: Fox Sports 2021-22 rebounding stats) =====
+  {name:"Pascal Siakam", team:"TOR", pos:"PF", year:2022, statType:"RPG", value:8.5, games:68, note:"Raptors' PF, before the 2024 Pacers trade"},
+  {name:"Luka Doncic", team:"DAL", pos:"PG", year:2022, statType:"RPG", value:9.1, games:65, note:"Mavericks' PG — rare rebounding numbers for a guard"},
+  // ===== 2022-23 RPG DEPTH ADDITIONS (source: Fox Sports 2022-23 rebounding stats) — outliers only,
+  // every legitimate PF/C from this season's top 25 was already in the pool =====
+  {name:"Jayson Tatum", team:"BOS", pos:"SF", year:2023, statType:"RPG", value:8.8, games:74, note:"Celtics' SF — rare rebounding numbers for a wing"},
+  {name:"Luka Doncic", team:"DAL", pos:"PG", year:2023, statType:"RPG", value:8.6, games:66, note:"Mavericks' PG — rare rebounding numbers for a guard"},
+  // ===== 2020-21 APG DEPTH ADDITIONS (source: Fox Sports 2020-21 assists stats) =====
+  {name:"Stephen Curry", team:"GSW", pos:"PG", year:2021, statType:"APG", value:5.8, games:63, note:"Warriors' PG"},
+  {name:"Ben Simmons", team:"PHI", pos:"PG", year:2021, statType:"APG", value:6.9, games:58, note:"76ers' PG, before the 2022 Nets trade"},
+  {name:"T.J. McConnell", team:"IND", pos:"PG", year:2021, statType:"APG", value:6.6, games:69, note:"Pacers' backup PG"},
+  // Deliberate outliers — genuinely elite at passing outside their usual position's lane
+  {name:"Draymond Green", team:"GSW", pos:"PF", year:2021, statType:"APG", value:8.9, games:63, note:"Warriors' PF — one of the best passing forwards ever"},
+  {name:"Jimmy Butler", team:"MIA", pos:"SF", year:2021, statType:"APG", value:7.1, games:52, note:"Heat's SF — rare playmaking for a wing"},
+  {name:"DeMar DeRozan", team:"SAS", pos:"SF", year:2021, statType:"APG", value:6.9, games:61, note:"Spurs' SF, before signing with Chicago — rare playmaking for a wing"},
+  {name:"Julius Randle", team:"NYK", pos:"PF", year:2021, statType:"APG", value:6.0, games:71, note:"Knicks' PF — rare playmaking for a big"},
+  {name:"Domantas Sabonis", team:"IND", pos:"C", year:2021, statType:"APG", value:6.7, games:62, note:"Pacers' C — known for elite passing at the center position"},
+  // ===== 2021-22 APG DEPTH ADDITIONS (source: Fox Sports 2021-22 assists stats) =====
+  {name:"Jrue Holiday", team:"MIL", pos:"PG", year:2022, statType:"APG", value:6.8, games:67, note:"Bucks' PG"},
+  {name:"Kevin Porter Jr.", team:"HOU", pos:"PG", year:2022, statType:"APG", value:6.2, games:61, note:"Rockets' PG"},
+  {name:"Cole Anthony", team:"ORL", pos:"PG", year:2022, statType:"APG", value:5.7, games:65, note:"Magic's PG"},
+  // Deliberate outliers — genuinely elite at passing outside their usual position's lane
+  {name:"Nikola Jokic", team:"DEN", pos:"C", year:2022, statType:"APG", value:7.9, games:74, note:"Nuggets' C — known for elite passing at the center position"},
+  {name:"Giannis Antetokounmpo", team:"MIL", pos:"PF", year:2022, statType:"APG", value:5.8, games:67, note:"Bucks' PF — rare playmaking for a big"},
+  {name:"Khris Middleton", team:"MIL", pos:"SF", year:2022, statType:"APG", value:5.4, games:66, note:"Bucks' SF — rare playmaking for a wing"},
+  {name:"Donovan Mitchell", team:"UTA", pos:"SG", year:2022, statType:"APG", value:5.3, games:67, note:"Jazz' SG — unusually strong playmaking for a scoring guard"},
+  {name:"Pascal Siakam", team:"TOR", pos:"PF", year:2022, statType:"APG", value:5.3, games:68, note:"Raptors' PF — rare playmaking for a big"}
 ];
 
 const STAT_LABELS = {PPG:"Points Per Game", RPG:"Rebounds Per Game", APG:"Assists Per Game"};
@@ -3040,7 +3074,7 @@ function renderBettingScreen(){
     </div>
 
     <h3>Star Power <span class="muted" style="font-weight:400;">(pure luck of the draw)</span> <button type="button" class="info-icon-btn" onclick="showStarList()" aria-label="Which players count as stars">ⓘ</button></h3>
-    <p class="muted" style="margin-top:-6px;">120 of the 404 player-seasons belong to a league star (tap the ⓘ to see who). This is about who you're dealt, not how well you guess.</p>
+    <p class="muted" style="margin-top:-6px;">127 of the 427 player-seasons belong to a league star (tap the ⓘ to see who). This is about who you're dealt, not how well you guess.</p>
     <div class="bet-row">
       <label class="bet-option"><span><input type="radio" name="bet-starpower" value="yes"> At least 1 star gets drawn</span><span class="odds">${oddsText(oddsMap.starpower.yes)}</span></label>
       <label class="bet-option"><span><input type="radio" name="bet-starpower" value="no"> No stars get drawn</span><span class="odds">${oddsText(oddsMap.starpower.no)}</span></label>
@@ -3049,7 +3083,7 @@ function renderBettingScreen(){
     </div>
 
     <h3>Season Spread <span class="muted" style="font-weight:400;">(pure luck of the draw)</span></h3>
-    <p class="muted" style="margin-top:-6px;">404 player-seasons span six seasons — 2020-21 through 2025-26. Will your hand of 5 spread across most of them, or stay bunched up?</p>
+    <p class="muted" style="margin-top:-6px;">427 player-seasons span six seasons — 2020-21 through 2025-26. Will your hand of 5 spread across most of them, or stay bunched up?</p>
     <div class="bet-row">
       <label class="bet-option"><span><input type="radio" name="bet-yearmix" value="yes"> 4+ different seasons get drawn</span><span class="odds">${oddsText(oddsMap.yearmix.yes)}</span></label>
       <label class="bet-option"><span><input type="radio" name="bet-yearmix" value="no"> 3 or fewer different seasons</span><span class="odds">${oddsText(oddsMap.yearmix.no)}</span></label>
